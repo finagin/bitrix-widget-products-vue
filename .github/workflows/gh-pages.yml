@@ -15,7 +15,7 @@ jobs:
         uses: xRealNeon/VuePagesAction@1.0.1
         with:
           username: 'x-access-token'
-          reponame: 'bitrix-widget-products-vue'
+          reponame: 'finagin/bitrix-widget-products-vue'
           token: ${{ secrets.GITHUB_TOKEN }}
           gitemail: ci@finag.in
           gitmsg: 'Build GitHub Pages'

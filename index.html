@@ -1,0 +1,60 @@
+<html lang="en" class="-webkit-">
+<head>
+    <title>Finagin</title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#E2E8F0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=roboto:300,900|roboto-slab:300&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com/3.4.1?plugins=aspect-ratio"></script>
+    <script>
+        let plugin = tailwind.plugin;
+
+        /** @type {import('tailwindcss').Config} */
+        tailwind.config = {
+            theme: {},
+            plugins: [],
+        }
+    </script>
+    <style type="text/tailwindcss"></style>
+    <script>document.addEventListener("touchstart", () => false, false);</script>
+    <script type="importmap">
+        {
+          "imports": {
+            "vue": "https://play.vuejs.org/vue.runtime.esm-browser.js",
+            "vue/server-renderer": "https://play.vuejs.org/server-renderer.esm-browser.js",
+            "vue-router": "https://unpkg.com/vue-router@4.3.0/dist/vue-router.esm-browser.js",
+            "@vue/devtools-api": "https://unpkg.com/@vue/devtools-api@6.6.1/lib/esm/index.js"
+          },
+          "scopes": {}
+        }
+    </script>
+</head>
+<body class="antialiased">
+<div id="app"></div>
+<script type="module">
+    import { createApp } from 'vue';
+    import { createRouter, createWebHistory } from 'vue-router';
+    import App from './App.vue';
+
+    const routes = [
+        { path: '/', component: { template: '<div>Home</div>' } },
+        { path: '/about', component: { template: '<div>About</div>' } },
+    ];
+
+    const router = createRouter({
+        history: createWebHistory(),
+        routes,
+    });
+
+    const app = createApp(App);
+    app.use(router);
+    app.mount('#app');
+</script>
+</body>
+</html>

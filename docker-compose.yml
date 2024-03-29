@@ -1,0 +1,13 @@
+services:
+  node: &base
+    image: node:lts-alpine
+    working_dir: /app
+    ports:
+      - "${APP_PORT:-80}:80"
+    volumes:
+      - .:/app
+    command: npm run dev
+
+  format:
+    <<: *base
+    command: npm run format

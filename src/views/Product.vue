@@ -81,7 +81,7 @@ onMounted(products.updateCurrent)
       >
         <template v-if="guessType(field) === 'relation' && !_.isEmpty(relationLink(field, value))">
           Открыть в Bitrix:
-          <template
+          /<template
               v-for="link in relationLink(field, value)">
             <a
               :href="link.href"
@@ -89,7 +89,7 @@ onMounted(products.updateCurrent)
               class="text-blue-600 dark:text-blue-500 hover:underline"
             >
               {{ link.id }}
-            </a>
+            </a>/
           </template>
         </template>
       </v-input>

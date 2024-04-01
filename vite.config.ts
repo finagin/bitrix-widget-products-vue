@@ -7,7 +7,6 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: import.meta.env.BASE_URL,
   plugins: [
     vue(),
     vueJsx(),
@@ -22,4 +21,5 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 80,
   },
+  base: '/bitrix-widget-products-vue/',
 })

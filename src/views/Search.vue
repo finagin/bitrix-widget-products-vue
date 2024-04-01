@@ -1,11 +1,9 @@
-<script setup lang="ts">
-import { defineModel, ref, watch } from 'vue'
-import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
+<script setup lang="js">
+import { ref } from 'vue'
 import { api, boolValue } from '@/helpers'
 import VTable from '@/components/VTable.vue'
 import _ from 'lodash'
 
-const route = useRoute()
 const search = ref('')
 const results = ref('')
 const isLoading = ref(false)
@@ -25,24 +23,6 @@ const find = async (event) => {
 
   isLoading.value = false
 }
-
-onBeforeRouteUpdate(async (to, from) => {
-  console.log('from', from)
-  console.log('to', to)
-})
-
-watch(
-  () => search,
-  async (value) => {
-    console.log(value)
-  }
-)
-watch(
-  () => route.params.search,
-  async (value) => {
-    console.log(value)
-  }
-)
 </script>
 
 <template>

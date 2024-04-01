@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="js">
 import { onMounted, computed } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import _ from 'lodash'

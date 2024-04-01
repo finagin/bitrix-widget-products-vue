@@ -8,7 +8,7 @@ export const api = axios.create({
 })
 
 export const boolValue = (
-  value,
+  value: any,
   trueCaption: string,
   falseCaption: string,
   unknownCaption: string

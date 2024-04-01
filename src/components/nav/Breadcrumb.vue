@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+<script setup lang="js">
+import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useApiCategories } from '@/stores/categories'
 
@@ -18,7 +18,7 @@ const breadcrumbs = computed(() => {
   return crumbs.reverse()
 })
 
-const cropName = (name: string, size = 20) => {
+const cropName = (name, size = 20) => {
   return name.length > size ? name.slice(0, size - 3) + '...' : name
 }
 </script>

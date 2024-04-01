@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="js">
 import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import _ from 'lodash'

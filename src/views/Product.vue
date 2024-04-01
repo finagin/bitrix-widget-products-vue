@@ -16,6 +16,7 @@ const guessType = (field) => {
     case 'ID ТЕ':
     case 'Кто создал':
     case 'Кто изменил':
+    case 'Опции':
     case 'ID дочерних ТЕ':
     case 'Комплектующие':
     case 'Производитель ТЕ':
@@ -80,14 +81,16 @@ onMounted(products.updateCurrent)
       >
         <template v-if="guessType(field) === 'relation' && !_.isEmpty(relationLink(field, value))">
           Открыть в Bitrix:
-          <a
-            v-for="link in relationLink(field, value)"
-            :href="link.href"
-            target="_blank"
-            class="text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            {{ link.id }}
-          </a>
+          <template
+              v-for="link in relationLink(field, value)">
+            <a
+              :href="link.href"
+              target="_blank"
+              class="text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              {{ link.id }}
+            </a>,
+          </template>
         </template>
       </v-input>
 

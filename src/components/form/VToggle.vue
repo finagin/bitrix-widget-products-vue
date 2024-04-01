@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 
-const props = defineProps({
+defineProps({
   value: {
     default: false
   }
 })
 
-const prepare = (value: string) => {
+const prepare = (value) => {
   switch (value) {
     case 'Y':
     case 'Да':

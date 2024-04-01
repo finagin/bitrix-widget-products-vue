@@ -89,7 +89,7 @@ onMounted(products.updateCurrent)
               class="text-blue-600 dark:text-blue-500 hover:underline"
             >
               {{ link.id }}
-            </a>,
+            </a>
           </template>
         </template>
       </v-input>

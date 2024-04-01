@@ -7,7 +7,7 @@ defineProps({
   }
 })
 
-const prepare = (value) => {
+const prepare = (value: any) => {
   switch (value) {
     case 'Y':
     case 'Да':

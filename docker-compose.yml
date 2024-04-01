@@ -10,4 +10,4 @@ services:
 
   format:
     <<: *base
-    command: npm run format
+    command: npm run build #format

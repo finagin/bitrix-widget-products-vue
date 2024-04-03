@@ -10,8 +10,12 @@ services:
 
   format:
     <<: *base
+    profiles:
+      - never
     command: npm run format
 
   build:
     <<: *base
+    profiles:
+      - never
     command: npm run build

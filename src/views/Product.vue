@@ -1,5 +1,5 @@
 <script setup lang="js">
-import { onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import _ from 'lodash'
 import { useApiProducts } from '@/stores/products'
@@ -55,7 +55,7 @@ const relationLink = (field, value) => {
       }
     })
   } catch (e) {
-    console.log(value)
+    console.log(field, value)
     return []
   }
 }
@@ -64,39 +64,168 @@ const toId = (field) => {
   return field.toLowerCase().replace(/ /g, '_')
 }
 
+const groups = computed(() => {
+  if (_.isEmpty(products.current)) {
+    return {}
+  }
+
+  const result = {
+    'Раздел - Размещение ТЕ': [],
+    'Раздел - Общая информация о ТЕ': [],
+    'Коммерческие параметры': [],
+    'Раздел - Сервисная информация': [],
+    'Массогабаритные характеристики': [],
+    'Электропитание': [],
+    'Пневмопитание': [],
+    'Подключение азота': [],
+    'Вытяжная вентиляция': [],
+    'Гидропитание': [],
+    'Комплектующие': [],
+    'Опции': [],
+    LOG: []
+  }
+
+  for (const [field, value] of Object.entries(products.current)) {
+    switch (field) {
+      case 'Раздел ТК':
+      case 'ID ТЕ':
+      case 'ID дочерних ТЕ':
+      case 'ID родительских ТЕ':
+        result['Раздел - Размещение ТЕ'].push({ field, value })
+        break
+      case 'Тип ТЕ':
+      case 'Наименование':
+      case 'Альтернативное наименование':
+      case 'Производитель ТЕ':
+      case 'Поставщик ТЕ':
+      case 'Наименование ТЕ от поставщика':
+      case 'Артикул':
+      case 'Артикул СМТтех':
+      case 'Модель':
+      case 'Основное фото ТЕ':
+      case 'Описание ТЕ':
+      case 'Особенности ТЕ':
+      case 'Спецификация ТЕ':
+      case 'Базовая комплектация ТЕ':
+      case 'Галерея ТЕ':
+      case 'Видеоматериалы ТЕ':
+      case 'Копия':
+      case 'БУ':
+        result['Раздел - Общая информация о ТЕ'].push({ field, value })
+        break
+      case 'Закупочная цена':
+      case 'Валюта закупочной цены':
+      case 'Скидка поставщика':
+      case 'Минимальная партия заказа':
+      case 'Комментарий':
+      case 'Доставка':
+      case 'Валюта доставки':
+      case 'Себестоимость':
+      case 'Валюта себестоимости':
+      case 'Сбытовая цена':
+      case 'Валюта сбытовой цены':
+      case 'Ставка НДС':
+      case 'Продажный коэффициент':
+      case 'Прибыль':
+      case 'Валюта прибыли':
+      case 'Маржинальность':
+      case 'Стоимость ПНР':
+      case 'Валюта стоимости ПНР':
+        result['Коммерческие параметры'].push({ field, value })
+        break
+      case 'Раздел - Сервисная информация':
+        result['Раздел - Сервисная информация'].push({ field, value })
+        break
+      case 'Длина, мм':
+      case 'Ширина, мм':
+      case 'Высота, мм':
+      case 'Вес, кг':
+        result['Массогабаритные характеристики'].push({ field, value })
+        break
+      case 'Мощность, Вт':
+        result['Электропитание'].push({ field, value })
+        break
+      case 'Давление пневмопитания, бар':
+      case 'Расход воздуха, л/мин':
+      case 'Диаметр подключения пневмопитания, мм':
+        result['Пневмопитание'].push({ field, value })
+        break
+      case 'Расход азота, л/мин':
+      case 'Диаметр подключения азота, мм':
+        result['Подключение азота'].push({ field, value })
+        break
+      case 'Объем вытяжки, м³/ч':
+      case 'Количество точек подключения вентиляции':
+      case 'Диаметр подключения вентиляции, мм':
+        result['Вытяжная вентиляция'].push({ field, value })
+        break
+      case 'Давление гидропитания, бар':
+      case 'Расход воды, л/час':
+        result['Гидропитание'].push({ field, value })
+        break
+      case 'Комплектующие':
+        result['Комплектующие'].push({ field, value })
+        break
+      case 'Опции':
+        result['Опции'].push({ field, value })
+        break
+      case 'Дата создания':
+      case 'Кто создал':
+      case 'Дата изменения':
+      case 'Кто изменил':
+        result['LOG'].push({ field, value })
+        break
+      default:
+        console.log(field)
+    }
+  }
+
+  return result
+})
+
 watch(() => route.params, products.updateCurrent)
 onMounted(products.updateCurrent)
 </script>
 
 <template>
   <template v-if="!_.isEmpty(products.current)">
-    <h1 class="text-xl font-black my-2.5">
+    <h1 class="text-2xl font-black my-2.5">
       {{ products.current['Наименование'] }}
     </h1>
-    <div class="mb-6" v-for="(value, field) in products.current">
-      <v-input
-        v-if="guessType(field) === 'text' || guessType(field) === 'relation'"
-        :id="toId(field)"
-        :title="field"
-        :value="value"
-        placeholder="John"
-      >
-        <template v-if="guessType(field) === 'relation' && !_.isEmpty(relationLink(field, value))">
-          Открыть в Bitrix: / <template v-for="link in relationLink(field, value)">
-            <a
-              :href="link.href"
-              target="_blank"
-              class="text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              {{ link.id }} </a
-            > /
+    <template v-for="(groupFields, groupName) in groups">
+      <h2 class="text-lg font-bold my-2.5">{{ groupName }}</h2>
+      <div class="mb-6" v-for="field in groupFields">
+        <v-input
+          v-if="guessType(field.field) === 'text' || guessType(field.field) === 'relation'"
+          :id="toId(field.field)"
+          :title="field.field"
+          :value="field.value"
+          placeholder="John"
+        >
+          <template
+            v-if="
+              guessType(field.field) === 'relation' &&
+              !_.isEmpty(relationLink(field.field, field.value))
+            "
+          >
+            Открыть в Bitrix: /
+            <template v-for="link in relationLink(field.field, field.value)">
+              <a
+                :href="link.href"
+                target="_blank"
+                class="text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                {{ link.id }}
+              </a>
+              /
+            </template>
           </template>
-        </template>
-      </v-input>
+        </v-input>
 
-      <v-toggle v-else-if="guessType(field) === 'toggle'" :value="value">
-        {{ field }}
-      </v-toggle>
-    </div>
+        <v-toggle v-else-if="guessType(field.field) === 'toggle'" :value="field.value">
+          {{ field.field }}
+        </v-toggle>
+      </div>
+    </template>
   </template>
 </template>

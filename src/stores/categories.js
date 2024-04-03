@@ -1,12 +1,12 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { api } from '@/helpers'
 
 class Category {
-  id//: number
-  name//: string
-  parent//: number | Category
-  children//: Category[]
+  id //: number
+  name //: string
+  parent //: number | Category
+  children //: Category[]
 
   constructor(id, name, parent, children = []) {
     this.id = parseInt(id)

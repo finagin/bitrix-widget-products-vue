@@ -18,6 +18,7 @@ const guessType = (field) => {
     case 'Кто изменил':
     case 'Опции':
     case 'ID дочерних ТЕ':
+    case 'ID родительских ТЕ':
     case 'Комплектующие':
     case 'Производитель ТЕ':
     case 'Поставщик ТЕ':
@@ -36,6 +37,7 @@ const relationLink = (field, value) => {
           switch (field) {
             case 'ID ТЕ':
             case 'ID дочерних ТЕ':
+            case 'ID родительских ТЕ':
             case 'Опции':
               return `https://smttech.bitrix24.ru/crm/catalog/21/product/${id}/`
             case 'Комплектующие':
@@ -80,16 +82,14 @@ onMounted(products.updateCurrent)
         placeholder="John"
       >
         <template v-if="guessType(field) === 'relation' && !_.isEmpty(relationLink(field, value))">
-          Открыть в Bitrix:
-          /<template
-              v-for="link in relationLink(field, value)">
+          Открыть в Bitrix: / <template v-for="link in relationLink(field, value)">
             <a
               :href="link.href"
               target="_blank"
               class="text-blue-600 dark:text-blue-500 hover:underline"
             >
-              {{ link.id }}
-            </a>/
+              {{ link.id }} </a
+            > /
           </template>
         </template>
       </v-input>

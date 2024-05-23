@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { useApiProducts } from '@/stores/products'
 import VInput from '@/components/form/VInput.vue'
 import VToggle from '@/components/form/VToggle.vue'
+import RelatedLink from '@/components/form/RelatedLink.vue'
 
 const route = useRoute()
 const products = useApiProducts()
@@ -28,34 +29,10 @@ const guessType = (field) => {
   }
 }
 
-const relationLink = (field, value) => {
+const relationLink = (value) => {
   try {
-    return value.split(',').map((id) => {
-      return {
-        id: id,
-        href: (() => {
-          switch (field) {
-            case 'ID ТЕ':
-            case 'ID дочерних ТЕ':
-            case 'ID родительских ТЕ':
-            case 'Опции':
-              return `https://smttech.bitrix24.ru/crm/catalog/21/product/${id}/`
-            case 'Комплектующие':
-              return `https://b24-7jzv3s.bitrix24.ru/crm/company/details/${id}/`
-            case 'Кто создал':
-            case 'Кто изменил':
-              return `https://smttech.bitrix24.ru/company/personal/user/${id}/`
-            case 'Производитель ТЕ':
-            case 'Поставщик ТЕ':
-              return `https://smttech.bitrix24.ru/crm/company/details/${id}/`
-            default:
-              return '#'
-          }
-        })()
-      }
-    })
+    return value.split(',')
   } catch (e) {
-    console.log(field, value)
     return []
   }
 }
@@ -142,6 +119,7 @@ const groups = computed(() => {
       case 'Вес, кг':
         result['Массогабаритные характеристики'].push({ field, value })
         break
+      case 'Электропитание':
       case 'Мощность, Вт':
         result['Электропитание'].push({ field, value })
         break
@@ -192,7 +170,7 @@ onMounted(products.updateCurrent)
     <h1 class="text-2xl font-black my-2.5">
       {{ products.current['Наименование'] }}
     </h1>
-    <template v-for="(groupFields, groupName) in groups">
+    <template :key="groupName" v-for="(groupFields, groupName) in groups">
       <h2 class="text-lg font-bold my-2.5">{{ groupName }}</h2>
       <div class="mb-6" v-for="field in groupFields">
         <v-input
@@ -203,20 +181,11 @@ onMounted(products.updateCurrent)
           placeholder="John"
         >
           <template
-            v-if="
-              guessType(field.field) === 'relation' &&
-              !_.isEmpty(relationLink(field.field, field.value))
-            "
+            v-if="guessType(field.field) === 'relation' && !_.isEmpty(relationLink(field.value))"
           >
             Открыть в Bitrix: /
-            <template v-for="link in relationLink(field.field, field.value)">
-              <a
-                :href="link.href"
-                target="_blank"
-                class="text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                {{ link.id }}
-              </a>
+            <template :key="id" v-for="id in relationLink(field.value)">
+              <RelatedLink :id="id" :field="field.field" />
               /
             </template>
           </template>
